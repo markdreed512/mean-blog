@@ -14,17 +14,13 @@ export class PostsComponent {
   inputPost:string = ""
 
   ngOnInit(): void {
-    this.posts = [
-      {
-        content: "First Blog Post",
-        public: false
-      },
-      {
-        content: "Second Blog Post",
-        public: true
-      }
-    ]
-
+    const posts = this.getPostsFromDB()
+    console.log("from DB: ", posts)
+  }
+  async getPostsFromDB (): Promise<object>{
+    const response = await fetch('http://localhost:3000/posts')
+    const postsFromDB = await response.json()
+    return postsFromDB
   }
   togglePublic (id: number): void {
     this.posts = this.posts.map((post, i) =>{
