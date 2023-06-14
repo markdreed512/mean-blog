@@ -14,18 +14,18 @@ app.get('/', (req, res) => {
 })
 app.get('/posts', async(req, res) => {
     try{
-        const posts = await Post.find({})
-        res.status(200).json(posts) 
-   }
-   catch(error){
-        res.status(500).json({message: error.message})
-   }
+        const posts = await Post.find()
+        res.json(posts) 
+    }
+    catch(error){
+            res.status(500).json({message: error.message})
+    }
 })
 app.get('/posts/:id', async(req, res) => {
     try{
         const {id} = req.params
         const post = await Post.findById(id)
-        res.status(200).json(post) 
+        res.status(200).send(JSON.stringify(post))
    }
    catch(error){
         res.status(500).json({message: error.message})

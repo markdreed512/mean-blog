@@ -9,18 +9,42 @@ import { Post  } from './../../models/Post'
 export class PostsComponent {
 
   title = "Blog Posts"
-  posts:Post[]
-
+  posts: any[] = []
   inputPost:string = ""
+  
 
-  ngOnInit(): void {
-    const posts = this.getPostsFromDB()
-    console.log("from DB: ", posts)
+  async ngOnInit() {
+    const postsFromDB = await this.getPostsFromDB()
+    this.posts = postsFromDB
+    // this.posts.push(postsFromDB[0])
+    
+    // this.posts = data
+    // iterate over, create Post objects of each and push to this.posts
+    // for(let post in data){
+    //   console.log(post)
+    // }
+    
   }
-  async getPostsFromDB (): Promise<object>{
+  async getPostsFromDB (){
     const response = await fetch('http://localhost:3000/posts')
-    const postsFromDB = await response.json()
-    return postsFromDB
+    const data = await response.json()
+    console.log(data)
+    return data
+  }
+  async addPostToDB (): Promise<object>{
+    const data = {
+      "content": this.inputPost,
+      "public": false
+    }
+    const response = await fetch('http://localhost:3000/blogpost', {
+      method: "Post",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+    return response.json()
   }
   togglePublic (id: number): void {
     this.posts = this.posts.map((post, i) =>{
