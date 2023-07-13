@@ -17,6 +17,11 @@ export class PostsComponent {
     const postsFromDB = await this.getPostsFromDB()
     this.posts = postsFromDB
   }
+  async displayPosts(){
+    console.log('displayPosts')
+    const postsFromDB = await this.getPostsFromDB()
+    this.posts = postsFromDB
+  }
   async getPostsFromDB (){
     const response = await fetch('http://localhost:3000/posts')
     const data = await response.json()
@@ -51,15 +56,11 @@ export class PostsComponent {
     })
   }
   async deletePost(id: number): Promise<void>{
-    // Delet request to api w/ ID
+    console.log("deleting: ", id)
     const response = await fetch(`http://localhost:3000/posts/${id}`, {method: 'DELETE'})
-    const data = await response.json()
-    console.log(data)
-
-    // this.posts = this.posts.filter((post, i) => {
-    //   return id !== this.posts.length - 1 - i
-    // })
-    console.log(this.posts )
+    // const data = await response.json()
+    console.log(response)
+    this.displayPosts()
   }
   // addPost() {
   //   this.posts.push({

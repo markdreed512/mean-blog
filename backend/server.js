@@ -62,7 +62,8 @@ app.delete('/posts/:id', async(req, res) => {
         if(!post){
             return res.status(404).json({message: `cannot find post with id ${id}`})
         }
-        res.status(200)
+        res.send()
+        // res.status(200)
     }
     catch(error){
             res.status(500).json({message: error.message})
