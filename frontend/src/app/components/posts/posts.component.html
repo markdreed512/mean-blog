@@ -1,19 +1,21 @@
-<h2>{{ title }}</h2>
-<form (submit)="addPostToDB()">
-    <input 
-        type="text" 
-        name="inputPost"
-        placeholder="Enter Post"
-        class="post-input"
-        [(ngModel)]="inputPost"
-    >
-    <input type="submit" value="Save" class="post-submit" />
-</form>
-<div class="posts">
-    <div class="post" *ngFor="let post of posts; let i = index;">
-        <div class="id">{{ i }} </div>
-        <div class="content">{{ post.content }}</div>
-        <div class="public">{{ post.public? "Public" : "Private"}} <button class="toggle-public-btn" (click)="togglePublic(i)">Set to {{ post.public? "private" : "public"}}</button></div>
-        <button class="delete" (click)="deletePost(i)">X</button>
+<div class="posts-container">
+    <form (submit)="addPostToDB()">
+        <input 
+            type="text" 
+            name="inputPost"
+            placeholder="Enter Post"
+            class="post-input"
+            [(ngModel)]="inputPost"
+        >
+        <input type="submit" value="Save" class="post-submit" />
+    </form>
+    <div class="posts">
+        <div class="post" *ngFor="let post of posts.reverse(); let i = index;">
+            <div class="id">{{ post.timestamp }} </div>
+            <div class="content">{{ post.content }}</div>
+            <div class="public">{{ post.public? "Public" : "Private"}}</div> 
+            <button class="btn toggle-public-btn" (click)="togglePublic(i)">Set to {{ post.public? "private" : "public"}}</button>
+            <button class="btn delete-btn" (click)="deletePost(post._id)">X</button>
+        </div>
     </div>
 </div>

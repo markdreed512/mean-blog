@@ -16,14 +16,6 @@ export class PostsComponent {
   async ngOnInit() {
     const postsFromDB = await this.getPostsFromDB()
     this.posts = postsFromDB
-    // this.posts.push(postsFromDB[0])
-    
-    // this.posts = data
-    // iterate over, create Post objects of each and push to this.posts
-    // for(let post in data){
-    //   console.log(post)
-    // }
-    
   }
   async getPostsFromDB (){
     const response = await fetch('http://localhost:3000/posts')
@@ -32,9 +24,11 @@ export class PostsComponent {
     return data
   }
   async addPostToDB (): Promise<object>{
+    const date = Date.now()
     const data = {
       "content": this.inputPost,
-      "public": false
+      "public": false,
+      "timestamp": date.toString()
     }
     const response = await fetch('http://localhost:3000/blogpost', {
       method: "Post",
@@ -44,6 +38,8 @@ export class PostsComponent {
       },
       body: JSON.stringify(data)
     })
+    this.posts = await this.getPostsFromDB()
+    this.inputPost = ""
     return response.json()
   }
   togglePublic (id: number): void {
@@ -54,16 +50,22 @@ export class PostsComponent {
       return post
     })
   }
-  deletePost(id: number): void{
-    this.posts = this.posts.filter((post, i) => {
-      return id !== i
-    })
+  async deletePost(id: number): Promise<void>{
+    // Delet request to api w/ ID
+    const response = await fetch(`http://localhost:3000/posts/${id}`, {method: 'DELETE'})
+    const data = await response.json()
+    console.log(data)
+
+    // this.posts = this.posts.filter((post, i) => {
+    //   return id !== this.posts.length - 1 - i
+    // })
+    console.log(this.posts )
   }
-  addPost() {
-    this.posts.push({
-      content: this.inputPost,
-      public: false
-    })
-    this.inputPost = ""
-  }
+  // addPost() {
+  //   this.posts.push({
+  //     content: this.inputPost,
+  //     public: false
+  //   })
+  //   this.inputPost = ""
+  // }
 }
